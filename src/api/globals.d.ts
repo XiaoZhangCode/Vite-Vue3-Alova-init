@@ -103,36 +103,56 @@ export type CommonResultBoolean = {
    */
   msg?: string;
 };
-export type UserUpdateReqDTO = {
-  /**
-   * 账号
-   */
-  userAccount?: string;
-  /**
-   * 密码
-   */
-  userPassword?: string;
-  /**
-   * 用户昵称
-   */
-  userName?: string;
-  /**
-   * 用户头像
-   */
-  userAvatar?: string;
-  /**
-   * 用户简介
-   */
-  userProfile?: string;
-  /**
-   * 用户角色
-   */
-  userRole?: string;
+export type UserSaveReqDTO = {
   /**
    * id
    * [required]
    */
   id: number;
+  /**
+   * 账号
+   * [required]
+   */
+  userAccount: string;
+  /**
+   * 密码
+   * [required]
+   */
+  userPassword: string;
+  /**
+   * 微信开放平台id
+   * [required]
+   */
+  unionId: string;
+  /**
+   * 公众号openId
+   * [required]
+   */
+  mpOpenId: string;
+  /**
+   * 用户昵称
+   * [required]
+   */
+  userName: string;
+  /**
+   * 用户头像
+   * [required]
+   */
+  userAvatar: string;
+  /**
+   * 用户简介
+   * [required]
+   */
+  userProfile: string;
+  /**
+   * 用户角色：user/admin
+   * [required]
+   */
+  userRole: string;
+  /**
+   * 用户状态（0正常 1停用）
+   */
+  userStatus?: number;
 };
 export type UserProfileUpdateReqDTO = {
   /**
@@ -147,6 +167,30 @@ export type UserProfileUpdateReqDTO = {
    * 用户简介
    */
   userProfile?: string;
+};
+export type UserPasswordUpdateReqDTO = {
+  /**
+   * 旧密码
+   */
+  oldPassword?: string;
+  /**
+   * 新密码
+   */
+  newPassword?: string;
+  /**
+   * 确认密码
+   */
+  checkPassword?: string;
+};
+export type UserPasswordResetReqDTO = {
+  /**
+   * id
+   */
+  id?: string;
+  /**
+   * 新密码
+   */
+  newPassword?: string;
 };
 export type CommonResultLong = {
   /**
@@ -234,32 +278,6 @@ export type UserLoginReqDTO = {
    * [required]
    */
   userPassword: string;
-};
-export type UserAddReqDTO = {
-  /**
-   * 账号
-   */
-  userAccount?: string;
-  /**
-   * 密码
-   */
-  userPassword?: string;
-  /**
-   * 用户昵称
-   */
-  userName?: string;
-  /**
-   * 用户头像
-   */
-  userAvatar?: string;
-  /**
-   * 用户简介
-   */
-  userProfile?: string;
-  /**
-   * 用户角色
-   */
-  userRole?: string;
 };
 export type CommonResultString = {
   /**
@@ -448,21 +466,35 @@ declare global {
        * **RequestBody**
        * ```ts
        * type RequestBody = {
-       *   // 账号
-       *   userAccount?: string
-       *   // 密码
-       *   userPassword?: string
-       *   // 用户昵称
-       *   userName?: string
-       *   // 用户头像
-       *   userAvatar?: string
-       *   // 用户简介
-       *   userProfile?: string
-       *   // 用户角色
-       *   userRole?: string
        *   // id
        *   // [required]
        *   id: number
+       *   // 账号
+       *   // [required]
+       *   userAccount: string
+       *   // 密码
+       *   // [required]
+       *   userPassword: string
+       *   // 微信开放平台id
+       *   // [required]
+       *   unionId: string
+       *   // 公众号openId
+       *   // [required]
+       *   mpOpenId: string
+       *   // 用户昵称
+       *   // [required]
+       *   userName: string
+       *   // 用户头像
+       *   // [required]
+       *   userAvatar: string
+       *   // 用户简介
+       *   // [required]
+       *   userProfile: string
+       *   // 用户角色：user/admin
+       *   // [required]
+       *   userRole: string
+       *   // 用户状态（0正常 1停用）
+       *   userStatus?: number
        * }
        * ```
        *
@@ -482,11 +514,64 @@ declare global {
        */
       updateUser<
         Config extends Alova2MethodConfig<CommonResultBoolean> & {
-          data: UserUpdateReqDTO;
+          data: UserSaveReqDTO;
         }
       >(
         config: Config
       ): Alova2Method<CommonResultBoolean, 'general.updateUser', Config>;
+      /**
+       * ---
+       *
+       * [PUT] 冻结解冻用户
+       *
+       * **path:** /user/update/status
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // 用户ID
+       *   // [required]
+       *   id: number
+       *   // 状态 0正常 1冻结
+       *   // [required]
+       *   status: number
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 业务状态
+       *   code?: number
+       *   // 返回数据
+       *   data?: boolean
+       *   // 消息提示
+       *   msg?: string
+       * }
+       * ```
+       */
+      updateUserStatus<
+        Config extends Alova2MethodConfig<CommonResultBoolean> & {
+          params: {
+            /**
+             * 用户ID
+             * [required]
+             */
+            id: number;
+            /**
+             * 状态 0正常 1冻结
+             * [required]
+             */
+            status: number;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<CommonResultBoolean, 'general.updateUserStatus', Config>;
       /**
        * ---
        *
@@ -529,6 +614,88 @@ declare global {
       >(
         config: Config
       ): Alova2Method<CommonResultBoolean, 'general.updateProfile', Config>;
+      /**
+       * ---
+       *
+       * [POST] 修改密码
+       *
+       * **path:** /user/update-password
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // 旧密码
+       *   oldPassword?: string
+       *   // 新密码
+       *   newPassword?: string
+       *   // 确认密码
+       *   checkPassword?: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 业务状态
+       *   code?: number
+       *   // 返回数据
+       *   data?: boolean
+       *   // 消息提示
+       *   msg?: string
+       * }
+       * ```
+       */
+      updatePassword<
+        Config extends Alova2MethodConfig<CommonResultBoolean> & {
+          data: UserPasswordUpdateReqDTO;
+        }
+      >(
+        config: Config
+      ): Alova2Method<CommonResultBoolean, 'general.updatePassword', Config>;
+      /**
+       * ---
+       *
+       * [POST] 重置用户密码
+       *
+       * **path:** /user/reset-password
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // id
+       *   id?: string
+       *   // 新密码
+       *   newPassword?: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 业务状态
+       *   code?: number
+       *   // 返回数据
+       *   data?: boolean
+       *   // 消息提示
+       *   msg?: string
+       * }
+       * ```
+       */
+      resetUserPassword<
+        Config extends Alova2MethodConfig<CommonResultBoolean> & {
+          data: UserPasswordResetReqDTO;
+        }
+      >(
+        config: Config
+      ): Alova2Method<CommonResultBoolean, 'general.resetUserPassword', Config>;
       /**
        * ---
        *
@@ -643,18 +810,35 @@ declare global {
        * **RequestBody**
        * ```ts
        * type RequestBody = {
+       *   // id
+       *   // [required]
+       *   id: number
        *   // 账号
-       *   userAccount?: string
+       *   // [required]
+       *   userAccount: string
        *   // 密码
-       *   userPassword?: string
+       *   // [required]
+       *   userPassword: string
+       *   // 微信开放平台id
+       *   // [required]
+       *   unionId: string
+       *   // 公众号openId
+       *   // [required]
+       *   mpOpenId: string
        *   // 用户昵称
-       *   userName?: string
+       *   // [required]
+       *   userName: string
        *   // 用户头像
-       *   userAvatar?: string
+       *   // [required]
+       *   userAvatar: string
        *   // 用户简介
-       *   userProfile?: string
-       *   // 用户角色
-       *   userRole?: string
+       *   // [required]
+       *   userProfile: string
+       *   // 用户角色：user/admin
+       *   // [required]
+       *   userRole: string
+       *   // 用户状态（0正常 1停用）
+       *   userStatus?: number
        * }
        * ```
        *
@@ -674,7 +858,7 @@ declare global {
        */
       addUser<
         Config extends Alova2MethodConfig<CommonResultLong> & {
-          data: UserAddReqDTO;
+          data: UserSaveReqDTO;
         }
       >(
         config: Config

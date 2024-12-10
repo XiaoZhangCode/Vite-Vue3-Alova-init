@@ -3,13 +3,13 @@
     <a-row :wrap="false">
       <a-col flex="200px">
         <div class="title-bar">
-          <img class="logo" src="../assets/logo.svg" alt="logo" width="25" height="25" />
-          <div class="title">template-init</div>
+          <img class="logo" src="../assets/logo.svg" alt="logo" width="20" />
+          <div class="title">Vue3-init-template</div>
         </div>
       </a-col>
       <a-col flex="auto">
         <a-menu
-            class="myMenu"
+          class="myMenu"
           :selectedKeys="current"
           mode="horizontal"
           @click="menuClick"

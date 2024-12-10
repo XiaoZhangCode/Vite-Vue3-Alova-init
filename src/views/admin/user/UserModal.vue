@@ -72,10 +72,10 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref, watch } from "vue";
-import PictureUploader from "../../../components/PictureUploader.vue";
-import { UserUpdateReqDTO, UserVo } from "../../../api/globals";
-import Api from "../../../api";
+import Api from "@/api";
+import PictureUploader from "@/components/PictureUploader.vue";
 import { message } from "ant-design-vue";
+import type { UserUpdateReqDTO, UserVo } from '@/api/globals'
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
@@ -137,7 +137,6 @@ watch(
 watch(
     () => props.record,
     (newVal) => {
-      // @ts-ignore
       if (newVal ?? "") {
         formState.id = newVal?.id;
         formState.userAccount = newVal?.userAccount;

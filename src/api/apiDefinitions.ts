@@ -18,7 +18,10 @@
  */
 export default {
   'general.updateUser': ['PUT', '/user/update'],
+  'general.updateUserStatus': ['PUT', '/user/update/status'],
   'general.updateProfile': ['PUT', '/user/update/profile'],
+  'general.updatePassword': ['POST', '/user/update-password'],
+  'general.resetUserPassword': ['POST', '/user/reset-password'],
   'general.userRegister': ['POST', '/user/register'],
   'general.userLogin': ['POST', '/user/login'],
   'general.addUser': ['POST', '/user/add'],
